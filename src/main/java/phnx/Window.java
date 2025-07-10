@@ -34,15 +34,7 @@ public class Window {
 
         init();
         loop();
-        cleanup();
-
-        // Free the memory
-        glfwFreeCallbacks(glfwWindow);
-        glfwDestroyWindow(glfwWindow);
-
-        //Terminate GLFW and then free the error callback
-        glfwTerminate();
-        glfwSetErrorCallback(null).free();
+        cleanup(); // Only cleanup once!
     }
 
     public void init(){
@@ -93,8 +85,13 @@ public class Window {
             glfwSwapBuffers(glfwWindow);
         }
     }
+
     public void cleanup() {
+        // Free the window callbacks and destroy the window
+        glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
+
+        // Terminate GLFW and free the error callback
         glfwTerminate();
         GLFWErrorCallback callback = glfwSetErrorCallback(null);
         if (callback != null) {

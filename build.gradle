@@ -61,13 +61,21 @@ dependencies {
     implementation "org.joml:joml-primitives:${jomlPrimitivesVersion}"
 }
 
-application{
+application {
     mainClass = 'Main'
-    applicationDefaultJvmArgs = [
-            '-XstartOnFirstThread',
+
+    // Base JVM args for all platforms
+    def jvmArgs = [
             '--enable-native-access=ALL-UNNAMED',
             '--add-opens=java.base/sun.misc=ALL-UNNAMED'
     ]
+
+    // Add macOS-specific argument
+    if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+        jvmArgs.add('-XstartOnFirstThread')
+    }
+
+    applicationDefaultJvmArgs = jvmArgs
 }
 
 test {
